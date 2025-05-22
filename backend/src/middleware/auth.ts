@@ -11,7 +11,11 @@ declare global {
   }
 }
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+export const authenticateToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   // First try to get token from cookie
   const token = req.cookies.auth_token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
 
@@ -21,7 +25,8 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
       method: req.method,
       ip: req.ip,
     });
-    return res.status(401).json({ message: 'Access denied. No token provided.' });
+    res.status(401).json({ message: 'Access denied. No token provided.' });
+    return;
   }
 
   try {

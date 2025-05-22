@@ -14,6 +14,35 @@ const setAuthCookie = (res: Response, token: string) => {
   });
 };
 
+export const getCurrentUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ message: 'Not authenticated' });
+      return;
+    }
+
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('id, email, name')
+      .eq('id', req.user.id)
+      .single();
+
+    if (error || !user) {
+      logger.error('Error fetching current user:', { error });
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+
+    res.json({ user });
+  } catch (error) {
+    logger.error('Error in getCurrentUser:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+    });
+    res.status(500).json({ message: 'Error fetching current user' });
+  }
+};
+
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password, name } = req.body;
