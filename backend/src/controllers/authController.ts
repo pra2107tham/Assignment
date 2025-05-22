@@ -8,8 +8,8 @@ import logger from '../config/logger.js';
 const setAuthCookie = (res: Response, token: string) => {
   res.cookie('auth_token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: false, // Set to false for development
+    sameSite: 'lax',
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   });
 };
