@@ -10,7 +10,6 @@ import timeRoutes from './routes/time.js';
 import statisticsRoutes from './routes/statistics.js';
 import logger from './config/logger.js';
 import SocketService from './services/socketService.js';
-import { errorHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
 
@@ -53,8 +52,6 @@ app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Welcome to Personal Task Dashboard API' });
 });
 
-// Error handling middleware
-app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
