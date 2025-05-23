@@ -168,4 +168,5 @@ MIT
 
 ---
 
-**Made with ❤️ by [Your Name]**
+**Made  by Pratham Shirbhate**
+pratham.shirbhate22@spit.ac.in
