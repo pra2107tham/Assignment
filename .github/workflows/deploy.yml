@@ -1,0 +1,37 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.AWS_SSH_KEY }}
+
+      - name: Copy code to EC2
+        run: |
+          rsync -avz --exclude 'node_modules' --exclude '.git' -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }}:~/app
+
+      - name: Write backend .env on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'SUPABASE_URL=${{ secrets.SUPABASE_URL }}' > ~/app/backend/.env"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}' >> ~/app/backend/.env"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'JWT_SECRET=${{ secrets.JWT_SECRET }}' >> ~/app/backend/.env"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'PORT=3000' >> ~/app/backend/.env"
+
+      - name: Write frontend .env on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'REACT_APP_API_URL=http://${{ secrets.AWS_HOST }}:3000/api' > ~/app/frontend/.env"
+
+      - name: Deploy with Docker Compose
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "cd ~/app && docker-compose down && docker-compose up --build -d"
