@@ -24,13 +24,14 @@ jobs:
       - name: Write backend .env on EC2
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'SUPABASE_URL=${{ secrets.SUPABASE_URL }}' > ~/app/backend/.env"
-          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}' >> ~/app/backend/.env"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}' >> ~/app/backend/.env"
           ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'JWT_SECRET=${{ secrets.JWT_SECRET }}' >> ~/app/backend/.env"
           ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'PORT=3000' >> ~/app/backend/.env"
 
       - name: Write frontend .env on EC2
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'VITE_API_URL=http://${{ secrets.AWS_HOST }}:3000/api' > ~/app/frontend/.env"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'VITE_SOCKET_URL=http://${{ secrets.AWS_HOST }}:3000' >> ~/app/frontend/.env"
 
       - name: Deploy with Docker Compose
         run: |
