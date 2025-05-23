@@ -19,6 +19,7 @@ services:
     env_file:
       - ./frontend/.env
     environment:
+      # For local development only. For production, set these to your EC2 public IP or domain in the deploy workflow.
       - VITE_API_URL=http://backend:3000/api
       - VITE_SOCKET_URL=http://backend:3000
     ports:
