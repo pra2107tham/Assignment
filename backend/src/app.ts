@@ -23,7 +23,7 @@ SocketService.getInstance().initialize(httpServer);
 app.use(helmet());
 app.use(cookieParser());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173', // Your frontend URL
+  origin: ['http://localhost:5173', 'http://13.203.223.240:5173'], // Your frontend URL
   credentials: true, // Allow cookies
 }));
 app.use(express.json());
