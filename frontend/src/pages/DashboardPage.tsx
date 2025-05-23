@@ -9,7 +9,7 @@ import { io, Socket } from 'socket.io-client';
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL;
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || API_URL.replace('/api', '');
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || (API_URL ? API_URL.replace('/api', '') : '');
 
 interface Task {
   id: string;
