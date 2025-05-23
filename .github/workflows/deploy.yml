@@ -30,7 +30,7 @@ jobs:
 
       - name: Write frontend .env on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'REACT_APP_API_URL=http://${{ secrets.AWS_HOST }}:3000/api' > ~/app/frontend/.env"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} "echo 'VITE_API_URL=http://${{ secrets.AWS_HOST }}:3000/api' > ~/app/frontend/.env"
 
       - name: Deploy with Docker Compose
         run: |

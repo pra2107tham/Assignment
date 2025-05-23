@@ -42,7 +42,7 @@ export interface ProductivityMetrics {
   longest_streak: number;
 }
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const statisticsService = {
   async getTaskStatistics(date: Date = new Date()): Promise<TaskStatistics> {

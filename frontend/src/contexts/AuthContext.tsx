@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 interface User {
   id: string;
   name: string;
@@ -25,7 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/auth/me', {
+        const response = await axios.get(`${API_URL}/auth/me`, {
           withCredentials: true,
         });
         setUser(response.data);
@@ -39,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     const response = await axios.post(
-      'http://localhost:3000/api/auth/login',
+      `${API_URL}/auth/login`,
       { email, password },
       { withCredentials: true }
     );
@@ -48,7 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = async (name: string, email: string, password: string) => {
     const response = await axios.post(
-      'http://localhost:3000/api/auth/register',
+      `${API_URL}/auth/register`,
       { name, email, password },
       { withCredentials: true }
     );
@@ -56,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async () => {
-    await axios.post('http://localhost:3000/api/auth/logout', {}, { withCredentials: true });
+    await axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true });
     setUser(null);
   };
 
