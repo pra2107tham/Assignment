@@ -44,13 +44,13 @@ class SocketService {
   // Task events
   public emitTaskCreated(task: any): void {
     if (!this.io) return;
-    this.io.to(task.user_id).emit('task:created', task);
+    this.io.to(`user_${task.user_id}`).emit('task:created', task);
     logger.debug('Task created event emitted', { taskId: task.id });
   }
 
   public emitTaskUpdated(task: any): void {
     if (!this.io) return;
-    this.io.to(task.user_id).emit('task:updated', task);
+    this.io.to(`user_${task.user_id}`).emit('task:updated', task);
     logger.debug('Task updated event emitted', { taskId: task.id });
   }
 
@@ -63,20 +63,20 @@ class SocketService {
   // Time tracking events
   public emitTimeTrackingStarted(timeEntry: any): void {
     if (!this.io) return;
-    this.io.to(timeEntry.user_id).emit('time:started', timeEntry);
+    this.io.to(`user_${timeEntry.user_id}`).emit('time:started', timeEntry);
     logger.debug('Time tracking started event emitted', { timeEntryId: timeEntry.id });
   }
 
   public emitTimeTrackingStopped(timeEntry: any): void {
     if (!this.io) return;
-    this.io.to(timeEntry.user_id).emit('time:stopped', timeEntry);
+    this.io.to(`user_${timeEntry.user_id}`).emit('time:stopped', timeEntry);
     logger.debug('Time tracking stopped event emitted', { timeEntryId: timeEntry.id });
   }
 
   // Statistics events
   public emitStatisticsUpdated(userId: string, statistics: any): void {
     if (!this.io) return;
-    this.io.to(userId).emit('statistics:updated', statistics);
+    this.io.to(`user_${userId}`).emit('statistics:updated', statistics);
     logger.debug('Statistics updated event emitted', { userId });
   }
 }
