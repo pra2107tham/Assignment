@@ -3,7 +3,6 @@ import { motion } from 'motion/react';
 import { io, Socket } from 'socket.io-client';
 import axios from 'axios';
 import { formatDistanceToNow } from 'date-fns';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const API_URL = 'http://localhost:3000/api';
