@@ -10,7 +10,11 @@ services:
     networks:
       - appnet
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        - VITE_API_URL=http://backend:3000/api
+        - VITE_SOCKET_URL=http://backend:3000
     container_name: frontend
     env_file:
       - ./frontend/.env
